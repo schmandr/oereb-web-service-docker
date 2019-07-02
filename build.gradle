@@ -1,0 +1,82 @@
+plugins {
+  id "java"
+   id 'net.nemerosa.versioning' version '2.0.0'
+}
+
+	// docker build -f Dockerfile -t claeis/oereb-web-service-docker .
+	// docker run -p 8080:8080 -d claeis/oereb-web-service-docker
+	// docker run -it --rm alpine ping 172.17.0.2
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+    maven {
+        url "http://oss.jfrog.org/artifactory/simple/oss-snapshot-local/"
+    }
+    maven {
+        url "http://jars.interlis.ch"
+    }
+}
+
+dependencies {
+    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "0.9.+"
+}
+
+jar {
+  manifest {
+    attributes(
+      "Main-Class": "ch.ehi.oereb.webservice.Application",
+      "Class-Path": configurations.runtimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
+  }
+}
+
+task jardist(type: Copy) {
+	delete fileTree('dist')
+	destinationDir = file('dist')
+	from jar
+    dependsOn configurations.runtimeClasspath
+	into('libs'){
+		from {
+			configurations.runtimeClasspath
+		}
+	}    
+}
+task buildImage(dependsOn: jardist){
+	doLast { task ->
+			// https://github.com/nemerosa/versioning
+			println versioning.info.full
+            def buildident=System.getProperty('TRAVIS_BUILD_NUMBER','localbuild')
+            def githash=versioning.info.commit
+            def build_timestamp=getTimestamp()
+			exec {
+				commandLine 'docker', 'build',
+				//'--no-cache', '--force-rm',
+				'-t', "sogis/oereb-web-service:$buildident",
+				'--label', "oereb-web-service.created=$build_timestamp", 
+				'--label', "oereb-web-service.git_commit=$githash",
+				'--label', "oereb-web-service.travis_build=$buildident",
+				'-f', 'Dockerfile',  '.'
+			}
+			exec {
+				commandLine 'docker', 'tag', 
+				"sogis/oereb-web-service:$buildident",
+				"sogis/oereb-web-service:latest"
+			}
+			// docker run -p 8080:8080 -d sogis/ccc-service
+			// docker run -p 8080:8080 -e CCC_DEBUG=1 -d sogis/ccc-service
+			// docker run -it --rm alpine ping 172.17.0.2
+        }
+    }
+task push(dependsOn: build){
+	doLast { task ->
+			exec {
+				commandLine 'docker', 'push', 
+				"sogis/oereb-web-service:latest"
+			}
+        }
+    }
+def getTimestamp() {
+    def date = new Date()
+    return date.format('yyyy-MM-dd HH:mm:ss')
+}
