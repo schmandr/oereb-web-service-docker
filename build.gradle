@@ -3,9 +3,12 @@ plugins {
   id 'net.nemerosa.versioning' version '2.0.0'
 }
 
-	// docker build -f Dockerfile -t claeis/oereb-web-service-docker .
-	// docker run -p 8080:8080 -d claeis/oereb-web-service-docker
-	// docker run -it --rm alpine ping 172.17.0.2
+// docker run -p 8080:8080 -d sogis/oereb-web-service
+// docker run -p 8080:8080 -e DBURL=jdbc:postgresql://docker.for.win.localhost/ceis -e DBSCHEMA=oereb -e DBUSR=usr -e DBPWD=pwd  sogis/oereb-web-service
+// docker run -it --rm alpine ping 172.17.0.2
+
+def DOCKER_ACCOUNT = System.getProperty('DOCKER_ACCOUNT','sogis')
+def DOCKER_REPO = System.getProperty('DOCKER_REPO','oereb-web-service')
 
 repositories {
 	mavenLocal()
@@ -52,23 +55,12 @@ task buildImage(dependsOn: jardist){
 			exec {
 				commandLine 'docker', 'build',
 				'--no-cache', '--force-rm',
-				'-t', "sogis/oereb-web-service:$buildident",
-				'-t', "sogis/oereb-web-service:latest",
-				'--label', "oereb-web-service.created=$build_timestamp", 
-				'--label', "oereb-web-service.git_commit=$githash",
-				'--label', "oereb-web-service.travis_build=$buildident",
+				'-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:${buildident}",
+				'-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:latest",
+				'--label', "${DOCKER_REPO}.created=${build_timestamp}", 
+				'--label', "${DOCKER_REPO}.git_commit=${githash}",
+				'--label', "${DOCKER_REPO}.travis_build=${buildident}",
 				'-f', 'Dockerfile',  '.'
-			}
-			// docker run -p 8080:8080 -d sogis/oereb-web-service
-			// docker run -p 8080:8080 -e DBURL=jdbc:postgresql://docker.for.win.localhost/ceis -e DBSCHEMA=oereb -e DBUSR=usr -e DBPWD=pwd  sogis/oereb-web-service
-			// docker run -it --rm alpine ping 172.17.0.2
-        }
-    }
-task push(dependsOn: buildImage){
-	doLast { task ->
-			exec {
-				commandLine 'docker', 'push', 
-				"sogis/oereb-web-service:latest"
 			}
         }
     }
