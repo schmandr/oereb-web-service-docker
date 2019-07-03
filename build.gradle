@@ -35,8 +35,8 @@ jar {
 }
 
 task jardist(type: Copy) {
-	delete fileTree('dist')
-	destinationDir = file('dist')
+	delete fileTree('build/dist')
+	destinationDir = file('build/dist')
 	from jar
     dependsOn configurations.runtimeClasspath
 	into('libs'){
