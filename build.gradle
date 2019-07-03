@@ -1,6 +1,6 @@
 plugins {
   id "java"
-   id 'net.nemerosa.versioning' version '2.0.0'
+  id 'net.nemerosa.versioning' version '2.0.0'
 }
 
 	// docker build -f Dockerfile -t claeis/oereb-web-service-docker .
@@ -51,24 +51,20 @@ task buildImage(dependsOn: jardist){
             def build_timestamp=getTimestamp()
 			exec {
 				commandLine 'docker', 'build',
-				//'--no-cache', '--force-rm',
+				'--no-cache', '--force-rm',
 				'-t', "sogis/oereb-web-service:$buildident",
+				'-t', "sogis/oereb-web-service:latest",
 				'--label', "oereb-web-service.created=$build_timestamp", 
 				'--label', "oereb-web-service.git_commit=$githash",
 				'--label', "oereb-web-service.travis_build=$buildident",
 				'-f', 'Dockerfile',  '.'
 			}
-			exec {
-				commandLine 'docker', 'tag', 
-				"sogis/oereb-web-service:$buildident",
-				"sogis/oereb-web-service:latest"
-			}
-			// docker run -p 8080:8080 -d sogis/ccc-service
-			// docker run -p 8080:8080 -e CCC_DEBUG=1 -d sogis/ccc-service
+			// docker run -p 8080:8080 -d sogis/oereb-web-service
+			// docker run -p 8080:8080 -e DBURL=jdbc:postgresql://docker.for.win.localhost/ceis -e DBSCHEMA=oereb -e DBUSR=usr -e DBPWD=pwd  sogis/oereb-web-service
 			// docker run -it --rm alpine ping 172.17.0.2
         }
     }
-task push(dependsOn: build){
+task push(dependsOn: buildImage){
 	doLast { task ->
 			exec {
 				commandLine 'docker', 'push', 
