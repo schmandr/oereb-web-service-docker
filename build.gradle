@@ -11,9 +11,9 @@ def DOCKER_ACCOUNT = System.getProperty('DOCKER_ACCOUNT','sogis')
 def DOCKER_REPO = System.getProperty('DOCKER_REPO','oereb-web-service')
 
 repositories {
-	mavenLocal()
-	mavenCentral()
-	jcenter()
+    mavenLocal()
+    mavenCentral()
+    jcenter()
     maven {
         url "http://oss.jfrog.org/artifactory/simple/oss-snapshot-local/"
     }
@@ -35,33 +35,33 @@ jar {
 }
 
 task jardist(type: Copy) {
-	delete fileTree('build/dist')
-	destinationDir = file('build/dist')
-	from jar
+    delete fileTree('build/dist')
+    destinationDir = file('build/dist')
+    from jar
     dependsOn configurations.runtimeClasspath
-	into('libs'){
-		from {
-			configurations.runtimeClasspath
-		}
-	}    
+    into('libs'){
+        from {
+            configurations.runtimeClasspath
+        }
+    }    
 }
 task buildImage(dependsOn: jardist){
-	doLast { task ->
-			// https://github.com/nemerosa/versioning
-			println versioning.info.full
+    doLast { task ->
+            // https://github.com/nemerosa/versioning
+            println versioning.info.full
             def buildident=System.getProperty('TRAVIS_BUILD_NUMBER','localbuild')
             def githash=versioning.info.commit
             def build_timestamp=getTimestamp()
-			exec {
-				commandLine 'docker', 'build',
-				'--no-cache', '--force-rm',
-				'-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:${buildident}",
-				'-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:latest",
-				'--label', "${DOCKER_REPO}.created=${build_timestamp}", 
-				'--label', "${DOCKER_REPO}.git_commit=${githash}",
-				'--label', "${DOCKER_REPO}.travis_build=${buildident}",
-				'-f', 'Dockerfile',  '.'
-			}
+            exec {
+                commandLine 'docker', 'build',
+                '--no-cache', '--force-rm',
+                '-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:${buildident}",
+                '-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:latest",
+                '--label', "${DOCKER_REPO}.created=${build_timestamp}", 
+                '--label', "${DOCKER_REPO}.git_commit=${githash}",
+                '--label', "${DOCKER_REPO}.travis_build=${buildident}",
+                '-f', 'Dockerfile',  '.'
+            }
         }
     }
 def getTimestamp() {
