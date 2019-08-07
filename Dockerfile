@@ -12,7 +12,7 @@ RUN cd /home/oereb-web-service && \
 
 USER 1001
 EXPOSE 8080
-CMD java -jar oereb-web-service-docker.jar \
+CMD java -jar oereb-web-service.jar \
   "--spring.datasource.url=${DBURL}" \
   "--spring.datasource.username=${DBUSR}" \
   "--spring.datasource.password=${DBPWD}" \
