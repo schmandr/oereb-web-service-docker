@@ -14,8 +14,13 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
+    /*
     maven {
         url "http://oss.jfrog.org/artifactory/simple/oss-snapshot-local/"
+    }
+    */
+    maven {
+        url "http://jars.umleditor.org"
     }
     maven {
         url "http://jars.interlis.ch"
