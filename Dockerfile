@@ -3,7 +3,7 @@ FROM openjdk:11
 USER root
 
 WORKDIR /home/oereb-web-service
-COPY build/dist/ /home/oereb-web-service
+COPY build/dist/libs/oereb-web-service-*.jar /home/oereb-web-service/oereb-web-service.jar
 
 RUN cd /home/oereb-web-service && \
     chown -R 1001:0 /home/oereb-web-service && \
