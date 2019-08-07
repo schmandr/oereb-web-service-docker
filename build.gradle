@@ -54,7 +54,7 @@ task buildImage(dependsOn: jardist){
     doLast { task ->
             // https://github.com/nemerosa/versioning
             println versioning.info.full
-            def buildident=System.getProperty('TRAVIS_BUILD_NUMBER','localbuild')
+            def buildident = System.getenv("TRAVIS_BUILD_NUMBER") ?: "localbuild"
             def githash=versioning.info.commit
             def build_timestamp=getTimestamp()
             exec {

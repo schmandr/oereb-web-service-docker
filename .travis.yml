@@ -12,6 +12,7 @@ branches:
 
 script:
   - gradle -DDOCKER_ACCOUNT=$DOCKER_ACCOUNT -DDOCKER_REPO=$DOCKER_REPO buildImage
+  - docker images
 
 deploy:
   provider: script
