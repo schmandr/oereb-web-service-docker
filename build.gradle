@@ -27,9 +27,14 @@ repositories {
     }
 }
 
-dependencies {
-    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "0.9.+"
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
+
+dependencies {
+    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "0.9.+", changing: true
+}
+
 
 jar {
   manifest {
@@ -38,6 +43,7 @@ jar {
       "Class-Path": configurations.runtimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
   }
 }
+
 
 task jardist(type: Copy) {
     delete fileTree('build/dist')
