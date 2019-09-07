@@ -1,6 +1,8 @@
-FROM adoptopenjdk/openjdk11:latest
+FROM adoptopenjdk/openjdk8:latest
 
 USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends libfontconfig1 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/oereb-web-service
 COPY build/dist/ /home/oereb-web-service
