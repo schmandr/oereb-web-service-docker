@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk8:latest
+FROM adoptopenjdk/openjdk11:latest
 
 USER root
 
@@ -13,7 +13,7 @@ RUN cd /home/oereb-web-service && \
 
 USER 1001
 EXPOSE 8080
-CMD java -jar oereb-web-service-docker.jar \
+CMD java -XX:MaxRAMPercentage=80.0 -jar oereb-web-service-docker.jar \
   "--spring.datasource.url=${DBURL}" \
   "--spring.datasource.username=${DBUSR}" \
   "--spring.datasource.password=${DBPWD}" \
