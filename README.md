@@ -6,3 +6,4 @@ Use the following env varaibles to setup the service
 - DBUSR
 - DBPWD
 - DBSCHEMA 
+
