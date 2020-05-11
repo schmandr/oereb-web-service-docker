@@ -13,7 +13,7 @@ RUN cd /home/oereb-web-service && \
 
 USER 1001
 EXPOSE 8080
-CMD LOGGING_LEVEL_CH_EHI_OEREB=INFO java -XX:MaxRAMPercentage=80.0 -jar oereb-web-service-docker.jar \
+CMD LOGGING_LEVEL_CH_EHI_OEREB=WARN java -XX:MaxRAMPercentage=80.0 -jar oereb-web-service-docker.jar \
   "--spring.datasource.url=${DBURL}" \
   "--spring.datasource.username=${DBUSR}" \
   "--spring.datasource.password=${DBPWD}" \
