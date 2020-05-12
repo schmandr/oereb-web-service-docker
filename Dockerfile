@@ -24,6 +24,7 @@ CMD LOGGING_LEVEL_CH_EHI_OEREB=WARN java -XX:MaxRAMPercentage=80.0 -jar oereb-we
   "--oereb.planForLandregister=https://geo.so.ch/api/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=ch.so.agi.grundbuchplan_oereb&STYLES=&SRS=EPSG%3A2056&CRS=EPSG%3A2056&TILED=false&DPI=96&OPACITIES=255&t=675&WIDTH=1920&HEIGHT=710&BBOX=2607051.2375,1228517.0374999999,2608067.2375,1228892.7458333333" \
   "--oereb.planForLandregisterMainPage=https://geo.so.ch/api/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=ch.so.agi.hintergrundkarte_sw&STYLES=&SRS=EPSG%3A2056&CRS=EPSG%3A2056&TILED=false&DPI=96&OPACITIES=255&t=675&WIDTH=1920&HEIGHT=710&BBOX=2607051.2375,1228517.0374999999,2608067.2375,1228892.7458333333" \
   "--spring.datasource.driver-class-name=org.postgresql.Driver" \
-  "--spring.datasource.tomcat.max-active=10"
+  "--spring.datasource.hikari.maximumPoolSize=10" \
+  "--logging.level.com.zaxxer.hikari=debug"
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s CMD curl http://localhost:8080/actuator/health

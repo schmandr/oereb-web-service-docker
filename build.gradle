@@ -32,10 +32,7 @@ configurations.all {
 }
 
 dependencies {
-    compile (group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "0.9.+", changing: true) {
-        exclude group: 'com.zaxxer', module: 'HikariCP'
-    }
-    implementation 'org.apache.tomcat:tomcat-jdbc:9.0.10'
+    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "0.9.+", changing: true
 }
 
 
