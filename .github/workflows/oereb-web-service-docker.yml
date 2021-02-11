@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Gradle
-        run: ./gradlew -DDOCKER_ACCOUNT=$DOCKER_ACCOUNT -DDOCKER_REPO=$DOCKER_REPO clean buildImage 
+        run: gradle -DDOCKER_ACCOUNT=$DOCKER_ACCOUNT -DDOCKER_REPO=$DOCKER_REPO clean buildImage 
       - name: Push docker image
         run: |
           echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin && docker push $DOCKER_ACCOUNT/$DOCKER_REPO
