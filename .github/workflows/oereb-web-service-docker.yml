@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Gradle
-        run: gradle -DDOCKER_ACCOUNT=$DOCKER_ACCOUNT -DDOCKER_REPO=$DOCKER_REPO clean buildImage 
+        run: ./gradlew -DDOCKER_ACCOUNT=$DOCKER_ACCOUNT -DDOCKER_REPO=$DOCKER_REPO clean buildImage 
       - name: Docker images
         run: |
           docker images
