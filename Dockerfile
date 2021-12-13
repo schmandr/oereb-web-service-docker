@@ -13,6 +13,8 @@ RUN cd /home/oereb-web-service && \
 
 USER 1001
 EXPOSE 8080
+#Log4j 2 CVE-2021-44228
+ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 CMD LOGGING_LEVEL_CH_EHI_OEREB=WARN java -XX:MaxRAMPercentage=80.0 -jar oereb-web-service-docker.jar \
   "--spring.datasource.url=${DBURL}" \
   "--spring.datasource.username=${DBUSR}" \
