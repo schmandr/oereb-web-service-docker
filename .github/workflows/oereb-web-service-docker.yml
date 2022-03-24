@@ -1,7 +1,6 @@
 name: oereb-web-service-docker
 
 on:
-  workflow_dispatch:
   push:
 
 jobs:
