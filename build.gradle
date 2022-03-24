@@ -32,7 +32,7 @@ configurations.all {
 }
 
 dependencies {
-    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "0.9.+", changing: true
+    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "2.0.0", changing: true
 }
 
 
@@ -60,7 +60,7 @@ task buildImage(dependsOn: jardist){
     doLast { task ->
             // https://github.com/nemerosa/versioning
             println versioning.info.full
-            def buildident = "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "localbuild")
+            def buildident = "2.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "localbuild")
             def githash=versioning.info.commit
             def build_timestamp=getTimestamp()
             exec {
