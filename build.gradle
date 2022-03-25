@@ -7,6 +7,7 @@ buildscript {
     }
 }
 
+
 plugins {
   id "java"
   id 'net.nemerosa.versioning' version '2.0.0'
@@ -24,7 +25,6 @@ apply plugin: 'org.springframework.boot'
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
     maven {
         url "http://jars.umleditor.org"
     }
@@ -42,7 +42,7 @@ dependencies {
     compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "2.0.0", changing: true
 }
 
-
+/*
 jar {
   manifest {
     attributes(
@@ -50,8 +50,13 @@ jar {
       "Class-Path": configurations.runtimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
   }
 }
+*/
 
+bootJar {
+    mainClassName = 'ch.ehi.oereb.webservice.Application'
+}
 
+/*
 task jardist(type: Copy) {
     delete fileTree('build/dist')
     destinationDir = file('build/dist')
@@ -63,6 +68,7 @@ task jardist(type: Copy) {
         }
     }    
 }
+*/
 
 // Docker image wird in/mit GH Action Pipeline erstellt (v.a. wegen ARM64)
 /*
