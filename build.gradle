@@ -38,8 +38,8 @@ configurations.all {
 }
 
 dependencies {
-    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "2.0.0", changing: true
     compile("org.springframework.boot:spring-boot-starter-actuator:2.1.4.RELEASE")
+    compile group: 'ch.ehi.oereb', name: 'oereb-web-service', version: "2.0.0", changing: true
 }
 
 
