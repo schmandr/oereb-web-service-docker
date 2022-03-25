@@ -27,8 +27,9 @@ CMD LOGGING_LEVEL_CH_EHI_OEREB=WARN java -XX:MaxRAMPercentage=80.0 -jar oereb-we
   "--oereb.planForLandregisterMainPage=https://geo.so.ch/api/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=ch.so.agi.hintergrundkarte_sw&STYLES=&SRS=EPSG%3A2056&CRS=EPSG%3A2056&TILED=false&DPI=96&OPACITIES=255&t=675&WIDTH=1920&HEIGHT=710&BBOX=2607051.2375,1228517.0374999999,2608067.2375,1228892.7458333333" \
   "--spring.datasource.driver-class-name=org.postgresql.Driver" \
   "--spring.datasource.hikari.maximumPoolSize=10" \
-  "--logging.level.com.zaxxer.hikari=debug" \
-  "--logging.level.org.springframework.jdbc.core.JdbcTemplate=debug" \
-  "--logging.level.ch.ehi.oereb=debug" 
+  "--logging.level.com.zaxxer.hikari=${LOG_LEVEL_DB_CONNECTION_POOL:-info}" \
+  "--logging.level.org.springframework.jdbc.core.JdbcTemplate=${LOG_LEVEL_DB_CONNECTION:-info}" \
+  "--logging.level.org.springframework.web=${LOG_LEVEL_FRAMEWORK:-info}" \
+  "--logging.level.ch.ehi.oereb=${LOG_LEVEL_OEREB:-info}" 
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s CMD curl http://localhost:8080/actuator/health
