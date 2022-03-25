@@ -70,8 +70,8 @@ task buildImage(dependsOn: jardist){
                 '-t', "${DOCKER_ACCOUNT}/${DOCKER_REPO}:latest",
                 '--label', "${DOCKER_REPO}.created=${build_timestamp}", 
                 '--label', "${DOCKER_REPO}.git_commit=${githash}",
-                '--label', "${DOCKER_REPO}.travis_build=${buildident}",
-                '-f', 'Dockerfile',  '.'
+                '--label', "${DOCKER_REPO}.gh_action_build=${buildident}",
+                '-f', 'Dockerfile.alpine',  '.'
             }
         }
     }
