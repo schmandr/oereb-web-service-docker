@@ -1,6 +1,8 @@
 name: oereb-web-service-docker
 
 on:
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
   push:
 
