@@ -5,6 +5,9 @@ on:
     - cron: "*/30 * * * *"
   workflow_dispatch:
   push:
+    paths-ignore:
+      - 'openshift/**'
+      - '**.md'
 
 jobs:
   build:
