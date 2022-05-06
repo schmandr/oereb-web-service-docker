@@ -4,10 +4,7 @@ RUN apk add --no-cache fontconfig ttf-dejavu && rm -rf /var/cache/apk/*
 
 WORKDIR /home/oereb-web-service
 COPY build/libs/oereb-web-service-docker.jar /home/oereb-web-service/oereb-web-service-docker.jar
-RUN cd /home/oereb-web-service && \
-    chown -R 1001:0 /home/oereb-web-service && \
-    chmod -R g+rw /home/oereb-web-service && \
-    ls -la /home/oereb-web-service
+RUN ls -la
 
 USER 1001
 EXPOSE 8080
