@@ -77,7 +77,5 @@ jobs:
           file: Dockerfile.alpine
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.DOCKER_ACCOUNT }}/${{ env.DOCKER_REPO }}
-          cache-to: type=inline
           pull: true
           push: ${{ (github.ref == 'refs/heads/master') && (github.event_name != 'pull_request') && !env.ACT }}
