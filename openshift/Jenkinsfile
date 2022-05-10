@@ -17,6 +17,15 @@ pipeline {
             when { expression { !params.RESTART_ONLY } }
             steps {
                 sh "oc process -f openshift/${appName}.yaml --param-file=openshift/${appName}_${environment}.params | oc apply -f - -n ${params.NAMESPACE}"
+                // In test environment additionally update the latest image stream tag
+                script {
+                    if (environment == 'test') {
+                        // First wait for previous rollout to finish
+                        sh "oc rollout status dc/${appName} -n ${params.NAMESPACE}"
+                        // Update the latest image stream tag
+                        sh "oc import-image ${appName}:latest -o name -n ${params.NAMESPACE}"
+                    }
+                }
             }
         }
         stage('Wait for rollout to finish') {
