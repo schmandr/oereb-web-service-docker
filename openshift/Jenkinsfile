@@ -11,13 +11,16 @@ pipeline {
             when { expression { params.RESTART_ONLY } }
             steps {
                 sh "oc rollout latest dc/${appName} -n ${params.NAMESPACE}"
-                sh "oc rollout status dc/${appName} -n ${params.NAMESPACE}"
             }
         }
         stage('Apply configuration') {
             when { expression { !params.RESTART_ONLY } }
             steps {
                 sh "oc process -f openshift/${appName}.yaml --param-file=openshift/${appName}_${environment}.params | oc apply -f - -n ${params.NAMESPACE}"
+            }
+        }
+        stage('Wait for rollout to finish') {
+            steps {
                 sh "oc rollout status dc/${appName} -n ${params.NAMESPACE}"
             }
         }
