@@ -2,11 +2,27 @@ FROM bellsoft/liberica-openjdk-alpine-musl:11.0.14
 
 RUN apk add --no-cache fontconfig ttf-dejavu && rm -rf /var/cache/apk/*
 
-WORKDIR /home/oereb-web-service
-COPY build/libs/oereb-web-service-docker.jar /home/oereb-web-service/oereb-web-service-docker.jar
-RUN ls -la
+ARG UID=1001
+RUN adduser -S oereb -u $UID
 
-USER 1001
+# WORKDIR /home/oereb-web-service
+# RUN chmod g+w .
+
+# COPY build/libs/oereb-web-service-docker.jar /home/oereb-web-service/oereb-web-service-docker.jar
+
+# RUN cd /home/oereb-web-service && \
+#     chown -R 1001:0 /home/oereb-web-service && \
+#     chmod -R g+rw /home/oereb-web-service && \
+#     ls -la /home/oereb-web-service
+
+WORKDIR /work/
+
+RUN chown $UID /work \
+    && chmod "g+rwX" /work \
+    && chown $UID:root /work
+COPY --chown=$UID:root build/libs/oereb-web-service-docker.jar /work/oereb-web-service-docker.jar
+
+USER oereb
 EXPOSE 8080
 #Log4j 2 CVE-2021-44228
 ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
