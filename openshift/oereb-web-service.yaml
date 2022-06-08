@@ -19,7 +19,7 @@ objects:
         name: ${IMAGENAME}:${TAG}
       importPolicy:
         scheduled: ${{IMPORT_POLICY_SCHEDULED}}
-      name: ${TAG}
+      name: stable
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -89,7 +89,7 @@ objects:
         - ${APPNAME}
         from:
           kind: ImageStreamTag
-          name: ${APPNAME}:${TAG}
+          name: ${APPNAME}:stable
 - apiVersion: v1
   kind: Service
   metadata:
