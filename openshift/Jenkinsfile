@@ -16,16 +16,10 @@ pipeline {
         stage('Apply configuration') {
             when { expression { !params.RESTART_ONLY } }
             steps {
+                // Update all image stream tags first (in general there's just one)
+                // (The intention is to update the "latest" image stream tag immediately)
+                sh "oc import-image ${appName} --all -o name -n ${params.NAMESPACE}"
                 sh "oc process -f openshift/${appName}.yaml --param-file=openshift/${appName}_${environment}.params | oc apply -f - -n ${params.NAMESPACE}"
-                // In test environment additionally update the latest image stream tag
-                script {
-                    if (environment == 'test') {
-                        // First wait for previous rollout to finish
-                        sh "sleep 2 && oc rollout status dc/${appName} -n ${params.NAMESPACE}"
-                        // Update all image stream tags (generally just the latest tag)
-                        sh "oc import-image ${appName} --all -o name -n ${params.NAMESPACE}"
-                    }
-                }
             }
         }
         stage('Wait for rollout to finish') {
