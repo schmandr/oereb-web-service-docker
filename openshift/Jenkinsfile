@@ -22,8 +22,8 @@ pipeline {
                     if (environment == 'test') {
                         // First wait for previous rollout to finish
                         sh "sleep 2 && oc rollout status dc/${appName} -n ${params.NAMESPACE}"
-                        // Update the latest image stream tag
-                        sh "oc import-image ${appName}:latest -o name -n ${params.NAMESPACE}"
+                        // Update all image stream tags (generally just the latest tag)
+                        sh "oc import-image ${appName} --all -o name -n ${params.NAMESPACE}"
                     }
                 }
             }
